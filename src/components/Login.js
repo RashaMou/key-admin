@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "../react-auth0-spa";
 
@@ -8,10 +9,10 @@ const Login = () => {
   return (
     <div>
       {!isAuthenticated && (
-        <button onClick={() => loginWithRedirect({})}>Log in</button>
+        <Button onClick={() => loginWithRedirect({})}>Log in</Button>
       )}
 
-      {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
+      {isAuthenticated && <Button onClick={() => logout()}>Log out</Button>}
     </div>
   );
 };
