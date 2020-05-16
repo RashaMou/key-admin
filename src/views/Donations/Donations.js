@@ -1,20 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Table,
-  FormGroup,
-  Input,
-  Label,
-  Button,
-} from "reactstrap";
+import { Table, Card, CardBody, CardHeader } from "reactstrap";
 import TablePagination from "../../components/TablePagination";
+import donationsData from "./DonationsData";
 
-import usersData from "./UsersData";
-
-function UserRow(props) {
+function DonationsRow(props) {
   const user = props.user;
   const userLink = `/users/${user.id}`;
 
@@ -26,33 +16,20 @@ function UserRow(props) {
       <td>
         <Link to={userLink}>{user.name}</Link>
       </td>
-      <td>{user.email}</td>
       <td>
         <i
           className={`flag-icon flag-icon-${user.country}  h4 mb-0 title=${user.country} id=${user.country}`}
         ></i>
       </td>
-      <td>{user.registered}</td>
-      <td>
-        <Link to={userLink}>{user.docs}</Link>
-      </td>
-      <td>
-        <FormGroup check className="checkbox">
-          <Input
-            className="form-check-input"
-            type="checkbox"
-            id="checkbox1"
-            name="checkbox1"
-            value="option1"
-          />
-          <Label check className="form-check-label" htmlFor="checkbox1" />
-        </FormGroup>
-      </td>
+      <td>{user.amount}</td>
+
+      <td>{user.date}</td>
+      <td>{user.organization}</td>
     </tr>
   );
 }
 
-const Users = () => {
+const Donations = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = (e, index) => {
@@ -71,13 +48,13 @@ const Users = () => {
   };
 
   const pageSize = 10;
-  const pagesCount = Math.ceil(usersData.length / 10);
+  const pagesCount = Math.ceil(donationsData.length / 10);
 
   return (
     <div className="animated fadeIn">
       <Card>
         <CardHeader>
-          <i className="fa fa-align-justify"></i> Users{" "}
+          <i className="fa fa-align-justify"></i> User Donations{" "}
         </CardHeader>
         <CardBody>
           <Table responsive hover>
@@ -85,18 +62,17 @@ const Users = () => {
               <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
-                <th scope="col">Email</th>
                 <th scope="col">Country</th>
-                <th scope="col">Date applied</th>
-                <th scope="col">Upload</th>
-                <th scope="col">Verified</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Organization</th>
               </tr>
             </thead>
             <tbody>
-              {usersData
+              {donationsData
                 .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
                 .map((user, index) => (
-                  <UserRow key={index} user={user} />
+                  <DonationsRow key={index} user={user} />
                 ))}
             </tbody>
           </Table>
@@ -109,9 +85,6 @@ const Users = () => {
               handlePreviousClick={handlePreviousClick}
               handleNextClick={handleNextClick}
             />
-            <Button className="submit-button" color="success">
-              Submit
-            </Button>
           </div>
         </CardBody>
       </Card>
@@ -119,4 +92,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Donations;

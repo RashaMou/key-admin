@@ -17,9 +17,6 @@ class DefaultFooter extends Component {
         <span>
           <a href="https://www.keyconservation.org">Key Conservation</a>
         </span>
-        <span className="ml-auto">
-          Powered by <a href="https://coreui.io/react">CoreUI for React</a>
-        </span>
       </React.Fragment>
     );
   }
