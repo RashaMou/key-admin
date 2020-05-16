@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Badge, Card, CardBody, CardHeader, Table } from "reactstrap";
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardHeader,
+  Table,
+  FormGroup,
+  Input,
+  Label,
+  Button,
+} from "reactstrap";
 import TablePagination from "../../components/TablePagination";
 
 import usersData from "./UsersData";
@@ -30,25 +40,49 @@ function UserRow(props) {
         <Link to={userLink}>{user.name}</Link>
       </td>
       <td>{user.email}</td>
-      <td>{user.country}</td>
+      <td>
+        <i
+          className={`flag-icon flag-icon-${user.country}  h4 mb-0 title=${user.country} id=${user.country}`}
+        ></i>
+      </td>
       <td>{user.registered}</td>
       <td>
         <Link to={userLink}>
           <Badge color={getBadge(user.status)}>{user.docs}</Badge>
         </Link>
       </td>
+      <td>
+        <FormGroup check className="checkbox">
+          <Input
+            className="form-check-input"
+            type="checkbox"
+            id="checkbox1"
+            name="checkbox1"
+            value="option1"
+          />
+          <Label check className="form-check-label" htmlFor="checkbox1" />
+        </FormGroup>
+      </td>
     </tr>
   );
 }
 
 const Users = () => {
-  const userList = usersData.filter((user) => user.id < 10);
-
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = (e, index) => {
     e.preventDefault();
     setCurrentPage(index);
+  };
+
+  const handleNextClick = (e, index) => {
+    e.preventDefault();
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousClick = (e, index) => {
+    e.preventDefault();
+    setCurrentPage(currentPage - 1);
   };
 
   const pageSize = 10;
@@ -59,7 +93,6 @@ const Users = () => {
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i> Users{" "}
-          <small className="text-muted">example</small>
         </CardHeader>
         <CardBody>
           <Table responsive hover>
@@ -70,7 +103,8 @@ const Users = () => {
                 <th scope="col">Email</th>
                 <th scope="col">Country</th>
                 <th scope="col">Date applied</th>
-                <th scope="col">Docs</th>
+                <th scope="col">Upload</th>
+                <th scope="col">Verified</th>
               </tr>
             </thead>
             <tbody>
@@ -80,13 +114,20 @@ const Users = () => {
                   <UserRow key={index} user={user} />
                 ))}
             </tbody>
+          </Table>
+          <div className="table-pag-flex">
             <TablePagination
               currentPage={currentPage}
               pageSize={pageSize}
               handlePageClick={handlePageClick}
               pagesCount={pagesCount}
+              handlePreviousClick={handlePreviousClick}
+              handleNextClick={handleNextClick}
             />
-          </Table>
+            <Button className="submit-button" color="success">
+              Submit
+            </Button>
+          </div>
         </CardBody>
       </Card>
     </div>
