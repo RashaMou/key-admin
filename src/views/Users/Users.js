@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge, Card, CardBody, CardHeader, Table } from "reactstrap";
+import TablePagination from "../../components/TablePagination";
 
 import usersData from "./UsersData";
 
@@ -40,40 +41,56 @@ function UserRow(props) {
   );
 }
 
-class Users extends Component {
-  render() {
-    const userList = usersData.filter((user) => user.id < 10);
+const Users = () => {
+  const userList = usersData.filter((user) => user.id < 10);
 
-    return (
-      <div className="animated fadeIn">
-        <Card>
-          <CardHeader>
-            <i className="fa fa-align-justify"></i> Users{" "}
-            <small className="text-muted">example</small>
-          </CardHeader>
-          <CardBody>
-            <Table responsive hover>
-              <thead>
-                <tr>
-                  <th scope="col">Id</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Country</th>
-                  <th scope="col">Date applied</th>
-                  <th scope="col">Docs</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userList.map((user, index) => (
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = (e, index) => {
+    e.preventDefault();
+    setCurrentPage(index);
+  };
+
+  const pageSize = 10;
+  const pagesCount = Math.ceil(usersData.length / 10);
+
+  return (
+    <div className="animated fadeIn">
+      <Card>
+        <CardHeader>
+          <i className="fa fa-align-justify"></i> Users{" "}
+          <small className="text-muted">example</small>
+        </CardHeader>
+        <CardBody>
+          <Table responsive hover>
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Country</th>
+                <th scope="col">Date applied</th>
+                <th scope="col">Docs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usersData
+                .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+                .map((user, index) => (
                   <UserRow key={index} user={user} />
                 ))}
-              </tbody>
-            </Table>
-          </CardBody>
-        </Card>
-      </div>
-    );
-  }
-}
+            </tbody>
+            <TablePagination
+              currentPage={currentPage}
+              pageSize={pageSize}
+              handlePageClick={handlePageClick}
+              pagesCount={pagesCount}
+            />
+          </Table>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
 
 export default Users;
