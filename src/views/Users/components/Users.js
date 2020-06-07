@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -10,9 +11,11 @@ import {
   Label,
   Button,
 } from "reactstrap";
-import TablePagination from "../../components/TablePagination";
+import TablePagination from "../../../components/TablePagination";
+import { getVettingUsers } from "../usersSlice";
+import { Auth0Context } from "../../../react-auth0-spa";
 
-import usersData from "./UsersData";
+import usersData from "../UsersData";
 
 function UserRow(props) {
   const user = props.user;
@@ -52,8 +55,14 @@ function UserRow(props) {
   );
 }
 
-const Users = () => {
+const Users = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const isAuthenticated = useContext(Auth0Context);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    props.getVettingUsers();
+  };
 
   const handlePageClick = (e, index) => {
     e.preventDefault();
@@ -109,7 +118,11 @@ const Users = () => {
               handlePreviousClick={handlePreviousClick}
               handleNextClick={handleNextClick}
             />
-            <Button className="submit-button" color="success">
+            <Button
+              className="submit-button"
+              color="success"
+              onClick={handleClick}
+            >
               Submit
             </Button>
           </div>
@@ -119,4 +132,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default connect(null, { getVettingUsers })(Users);

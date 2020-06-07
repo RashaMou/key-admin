@@ -5,6 +5,7 @@ import "./polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import "./index.css";
 import App from "./App";
@@ -12,6 +13,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config.json";
 import history from "./utils/history";
+import store from "./store/store";
 
 // A function that routes the user to the right place
 // after login
@@ -24,17 +26,19 @@ const onRedirectCallback = (appState) => {
 };
 
 ReactDOM.render(
-  <Router history={history}>
-    <Auth0Provider
-      domain={config.domain}
-      client_id={config.clientId}
-      redirect_uri={window.location.origin}
-      onRedirectCallback={onRedirectCallback}
-      audience={config.audience}
-    >
-      <App />
-    </Auth0Provider>
-  </Router>,
+  <Provider store={store}>
+    <Router history={history}>
+      <Auth0Provider
+        domain={config.domain}
+        client_id={config.clientId}
+        redirect_uri={window.location.origin}
+        onRedirectCallback={onRedirectCallback}
+        audience={config.audience}
+      >
+        <App />
+      </Auth0Provider>
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 
