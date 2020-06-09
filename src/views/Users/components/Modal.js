@@ -5,7 +5,7 @@ const PopupModal = (props) => {
   return (
     <Modal isOpen={props.isOpen} toggle={props.toggle} className="modal-sm">
       <ModalHeader>User Approval</ModalHeader>
-      <ModalBody>Are you sure you want to approve this user?</ModalBody>
+      <ModalBody>{`Are you sure you want to ${props.action} this application?`}</ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={props.successAction}>
           Approve

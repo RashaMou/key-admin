@@ -10,9 +10,11 @@ function UserRow(props) {
   const user = props.user;
   const userLink = `/users/${user.id}`;
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalAction, setModalAction] = useState("");
 
   const handleClick = (action) => {
     setModalIsOpen(!modalIsOpen);
+    setModalAction(action);
   };
 
   const toggleModal = () => {
@@ -31,6 +33,7 @@ function UserRow(props) {
         toggle={toggleModal}
         user_id={user.id}
         successAction={handleApprove}
+        action={modalAction}
       />
       <tr key={user.id.toString()}>
         <th scope="row">
@@ -54,10 +57,14 @@ function UserRow(props) {
           <Link to={userLink}>{user.docs}</Link>
         </td>
         <td>
-          <Button color="success" onClick={() => handleClick("Approve")}>
+          <Button
+            color="success"
+            onClick={() => handleClick("approve")}
+            style={{ marginRight: "20px" }}
+          >
             <i className="fas fa-check"></i>
           </Button>
-          <Button color="danger" onClick={() => handleClick("Deny")}>
+          <Button color="danger" onClick={() => handleClick("deny")}>
             <i className="fas fa-times"></i>
           </Button>
         </td>
