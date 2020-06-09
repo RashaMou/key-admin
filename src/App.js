@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { useAuth0 } from "./react-auth0-spa";
 import "./App.scss";
 import PrivateRoute from "./utils/PrivateRoute";

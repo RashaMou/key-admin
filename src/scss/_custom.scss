@@ -1,1 +1,17 @@
-// Here you can add other styles
+///////// HEADER ///////////
+.app-header {
+  padding-right: 1rem;
+  .header-menu {
+    display: flex;
+  }
+}
+
+///////// USERS TABLE /////////
+.table-pag-flex {
+  display: flex;
+  justify-content: space-between;
+
+  .submit-button {
+    height: 2.2rem;
+  }
+}
