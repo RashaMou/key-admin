@@ -19,15 +19,18 @@ import {
 import navigation from "../../sidebarNav";
 // routes config
 import routes from "../../routes";
+import DefaultAside from "./DefaultAside";
+import DefaultFooter from "./DefaultFooter";
+import DefaultHeader from "./DefaultHeader";
 
-const DefaultAside = React.lazy(() => import("./DefaultAside"));
-const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
-const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
+// const DefaultAside = React.lazy(() => import("./DefaultAside"));
+// const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
+// const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
 
 class DefaultLayout extends Component {
-  loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
-  );
+  // loading = () => (
+  //   <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  // );
 
   signOut(e) {
     e.preventDefault();
@@ -38,55 +41,55 @@ class DefaultLayout extends Component {
     return (
       <div className="app">
         <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <DefaultHeader onLogout={(e) => this.signOut(e)} />
-          </Suspense>
+          {/* <Suspense fallback={this.loading()}> */}
+          <DefaultHeader />
+          {/* </Suspense> */}
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <Suspense>
-              <AppSidebarNav
-                navConfig={navigation}
-                {...this.props}
-                router={router}
-              />
-            </Suspense>
+            {/* <Suspense> */}
+            <AppSidebarNav
+              navConfig={navigation}
+              {...this.props}
+              router={router}
+            />
+            {/* </Suspense> */}
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router} />
             <Container fluid>
-              <Suspense fallback={this.loading()}>
-                <Switch>
-                  {routes.map((route, idx) => {
-                    return route.component ? (
-                      <Route
-                        key={idx}
-                        path={route.path}
-                        exact={route.exact}
-                        name={route.name}
-                        render={(props) => <route.component {...props} />}
-                      />
-                    ) : null;
-                  })}
-                  <Redirect from="/" to="/dashboard" />
-                </Switch>
-              </Suspense>
+              {/* <Suspense fallback={this.loading()}> */}
+              <Switch>
+                {routes.map((route, idx) => {
+                  return route.component ? (
+                    <Route
+                      key={idx}
+                      path={route.path}
+                      exact={route.exact}
+                      name={route.name}
+                      render={(props) => <route.component {...props} />}
+                    />
+                  ) : null;
+                })}
+                <Redirect from="/" to="/dashboard" />
+              </Switch>
+              {/* </Suspense> */}
             </Container>
           </main>
           <AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
+            {/* <Suspense fallback={this.loading()}> */}
+            <DefaultAside />
+            {/* </Suspense> */}
           </AppAside>
         </div>
         <AppFooter>
-          <Suspense fallback={this.loading()}>
-            <DefaultFooter />
-          </Suspense>
+          {/* <Suspense fallback={this.loading()}> */}
+          <DefaultFooter />
+          {/* </Suspense> */}
         </AppFooter>
       </div>
     );
