@@ -1,68 +1,78 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Table,
-  FormGroup,
-  Input,
-  Label,
-  Button,
-} from "reactstrap";
+import { Card, CardBody, CardHeader, Table, Button } from "reactstrap";
 import TablePagination from "../../../components/TablePagination";
-import { getVettingUsers } from "../usersSlice";
-import { Auth0Context } from "../../../react-auth0-spa";
-
-import usersData from "../UsersData";
+import { getVettingUsers, approveUser } from "../usersSlice";
+import PopupModal from "./Modal";
 
 function UserRow(props) {
   const user = props.user;
   const userLink = `/users/${user.id}`;
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleClick = (action) => {
+    setModalIsOpen(!modalIsOpen);
+  };
+
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
+
+  const handleApprove = () => {
+    props.approveUser(37);
+    toggleModal();
+  };
 
   return (
-    <tr key={user.id.toString()}>
-      <th scope="row">
-        <Link to={userLink}>{user.id}</Link>
-      </th>
-      <td>
-        <Link to={userLink}>{user.name}</Link>
-      </td>
-      <td>{user.email}</td>
-      <td>
-        <i
+    <>
+      <PopupModal
+        isOpen={modalIsOpen}
+        toggle={toggleModal}
+        user_id={user.id}
+        successAction={handleApprove}
+      />
+      <tr key={user.id.toString()}>
+        <th scope="row">
+          <Link to={userLink}>{user.id}</Link>
+        </th>
+        <td>
+          <Link to={userLink}>{user.name}</Link>
+        </td>
+        <td>{user.email}</td>
+        <td>
+          {user.country}
+          {/* <i
           className={`flag-icon flag-icon-${user.country}  h4 mb-0 title=${user.country} id=${user.country}`}
-        ></i>
-      </td>
-      <td>{user.registered}</td>
-      <td>
-        <Link to={userLink}>{user.docs}</Link>
-      </td>
-      <td>
-        <FormGroup check className="checkbox">
-          <Input
-            className="form-check-input"
-            type="checkbox"
-            id="checkbox1"
-            name="checkbox1"
-            value="option1"
-          />
-          <Label check className="form-check-label" htmlFor="checkbox1" />
-        </FormGroup>
-      </td>
-    </tr>
+        ></i> */}
+        </td>
+        <td>
+          <a href={user.link_url}>{user.link_url}</a>
+        </td>
+        <td>{user.phone_number}</td>
+        <td>
+          <Link to={userLink}>{user.docs}</Link>
+        </td>
+        <td>
+          <Button color="success" onClick={() => handleClick("Approve")}>
+            <i class="fas fa-check"></i>
+          </Button>
+          <Button color="danger" onClick={() => handleClick("Deny")}>
+            <i class="fas fa-times"></i>
+          </Button>
+        </td>
+      </tr>
+    </>
   );
 }
 
 const Users = (props) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const isAuthenticated = useContext(Auth0Context);
-
-  const handleClick = (e) => {
-    e.preventDefault();
+  console.log(props.users);
+  useEffect(() => {
     props.getVettingUsers();
-  };
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = (e, index) => {
     e.preventDefault();
@@ -80,7 +90,7 @@ const Users = (props) => {
   };
 
   const pageSize = 10;
-  const pagesCount = Math.ceil(usersData.length / 10);
+  const pagesCount = Math.ceil(props.users.length / 10);
 
   return (
     <div className="animated fadeIn">
@@ -96,13 +106,14 @@ const Users = (props) => {
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Country</th>
-                <th scope="col">Date applied</th>
-                <th scope="col">Upload</th>
-                <th scope="col">Verified</th>
+                <th scope="col">Website</th>
+                <th scope="col">Phone number</th>
+                <th scope="col">Documentation</th>
+                <th scope="col">Approve</th>
               </tr>
             </thead>
             <tbody>
-              {usersData
+              {props.users
                 .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
                 .map((user, index) => (
                   <UserRow key={index} user={user} />
@@ -118,13 +129,6 @@ const Users = (props) => {
               handlePreviousClick={handlePreviousClick}
               handleNextClick={handleNextClick}
             />
-            <Button
-              className="submit-button"
-              color="success"
-              onClick={handleClick}
-            >
-              Submit
-            </Button>
           </div>
         </CardBody>
       </Card>
@@ -132,4 +136,10 @@ const Users = (props) => {
   );
 };
 
-export default connect(null, { getVettingUsers })(Users);
+const mapStateToProps = (state) => ({
+  users: state.users.vetting.users,
+});
+
+export default connect(mapStateToProps, { getVettingUsers, approveUser })(
+  Users
+);

@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import usersReducer from "../../views/Users/usersSlice";
 
-export default combineReducers({
+const rootReducer = combineReducers({
   users: usersReducer,
 });
+
+export default rootReducer;
