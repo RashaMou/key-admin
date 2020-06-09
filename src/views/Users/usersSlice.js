@@ -27,12 +27,24 @@ const usersSlice = createSlice({
     },
     approveUserSuccess(state, action) {
       state.vetting.loading = false;
-      const users = state.vetting.users.filter(
-        (user) => user.sub !== action.payload
-      );
+      const sub = action.payload;
+      const users = state.vetting.users.filter((user) => user.sub !== sub);
       state.vetting.users = users;
     },
     approveUserFailure(state, action) {
+      state.vetting.loading = false;
+      state.vetting.error = action.payload;
+    },
+    denyUserStart(state) {
+      state.vetting.loading = true;
+    },
+    denyUserSuccess(state, action) {
+      const sub = action.payload;
+      state.vetting.loading = false;
+      const users = state.vetting.users.filter((user) => user.sub !== sub);
+      state.vetting.users = users;
+    },
+    denyUserFailure(state, action) {
       state.vetting.loading = false;
       state.vetting.error = action.payload;
     },
@@ -49,6 +61,9 @@ export const {
   getUserStart,
   getUserSuccess,
   getUserFailure,
+  denyUserStart,
+  denyUserSuccess,
+  denyUserFailure,
 } = usersSlice.actions;
 export default usersSlice.reducer;
 
@@ -70,12 +85,21 @@ export const approveUser = (id) => async (dispatch) => {
   try {
     const res = await axios.put(`http://localhost:8000/api/vetting/${id}`);
     if (res) {
-      console.log("res", res);
       dispatch(approveUserSuccess(res.data.approvedUser.sub));
-      getVettingUsers();
     }
-    console.log("res", res);
   } catch (error) {
     dispatch(approveUserFailure(error));
+  }
+};
+
+export const denyUser = (id) => async (dispatch) => {
+  dispatch(denyUserStart());
+  try {
+    const res = await axios.delete(`http://localhost:8000/api/vetting/${id}`);
+    if (res) {
+      dispatch(denyUserSuccess(res.data.sub));
+    }
+  } catch (error) {
+    dispatch(denyUserFailure(error));
   }
 };

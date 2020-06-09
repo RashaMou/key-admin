@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, Table, Button } from "reactstrap";
 import TablePagination from "../../../components/TablePagination";
-import { getVettingUsers, approveUser } from "../usersSlice";
+import { getVettingUsers, approveUser, denyUser } from "../usersSlice";
 import PopupModal from "./Modal";
 
 function UserRow(props) {
@@ -26,6 +26,11 @@ function UserRow(props) {
     toggleModal();
   };
 
+  const handleDeny = () => {
+    props.denyUser(user.id);
+    toggleModal();
+  };
+
   return (
     <>
       <PopupModal
@@ -33,6 +38,7 @@ function UserRow(props) {
         toggle={toggleModal}
         user_id={user.id}
         successAction={handleApprove}
+        denyAction={handleDeny}
         action={modalAction}
       />
       <tr key={user.id.toString()}>
@@ -73,7 +79,7 @@ function UserRow(props) {
   );
 }
 
-const Users = ({ getVettingUsers, approveUser, users }) => {
+const Users = ({ getVettingUsers, approveUser, denyUser, users }) => {
   useEffect(() => {
     getVettingUsers();
   }, [getVettingUsers]);
@@ -122,7 +128,12 @@ const Users = ({ getVettingUsers, approveUser, users }) => {
               {users
                 .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
                 .map((user, index) => (
-                  <UserRow key={index} user={user} approveUser={approveUser} />
+                  <UserRow
+                    key={index}
+                    user={user}
+                    approveUser={approveUser}
+                    denyUser={denyUser}
+                  />
                 ))}
             </tbody>
           </Table>
@@ -146,6 +157,8 @@ const mapStateToProps = (state) => ({
   users: state.users.vetting.users,
 });
 
-export default connect(mapStateToProps, { getVettingUsers, approveUser })(
-  Users
-);
+export default connect(mapStateToProps, {
+  getVettingUsers,
+  approveUser,
+  denyUser,
+})(Users);
