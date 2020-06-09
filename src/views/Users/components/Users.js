@@ -5,12 +5,15 @@ import { Card, CardBody, CardHeader, Table, Button } from "reactstrap";
 import TablePagination from "../../../components/TablePagination";
 import { getVettingUsers, approveUser, denyUser } from "../usersSlice";
 import PopupModal from "./Modal";
+import convertCountryToCode from "../../../utils/countryCodes";
 
 function UserRow(props) {
   const user = props.user;
   const userLink = `/users/${user.id}`;
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalAction, setModalAction] = useState("");
+
+  let country = convertCountryToCode(user.country);
 
   const handleClick = (action) => {
     setModalIsOpen(!modalIsOpen);
@@ -45,15 +48,26 @@ function UserRow(props) {
         <th scope="row">
           <Link to={userLink}>{user.id}</Link>
         </th>
+
+        <td>
+          <div className="avatar">
+            <img
+              src={user.profile_image}
+              className="img-avatar"
+              alt={user.name}
+            />
+          </div>
+        </td>
+
         <td>
           <Link to={userLink}>{user.name}</Link>
         </td>
         <td>{user.email}</td>
         <td>
-          {user.country}
-          {/* <i
-          className={`flag-icon flag-icon-${user.country}  h4 mb-0 title=${user.country} id=${user.country}`}
-        ></i> */}
+          {/* {user.country} */}
+          <i
+            className={`flag-icon flag-icon-${country}  h4 mb-0 title=${country} aria-label=${country} id=${country}`}
+          ></i>
         </td>
         <td>
           <a href={user.link_url}>{user.link_url}</a>
@@ -115,6 +129,7 @@ const Users = ({ getVettingUsers, approveUser, denyUser, users }) => {
             <thead>
               <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Avatar</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Country</th>

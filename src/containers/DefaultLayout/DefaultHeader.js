@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 import logo from "../../assets/img/brand/key-logo.png";
-import Login from "../../components/Login";
+import Logout from "./Logout";
 
 const propTypes = {
   children: PropTypes.node,
@@ -15,9 +15,6 @@ const defaultProps = {};
 
 class DefaultHeader extends Component {
   render() {
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
-
     return (
       <React.Fragment>
         <div className="header-menu">
@@ -34,7 +31,7 @@ class DefaultHeader extends Component {
             </NavItem>
           </Nav>
         </div>
-        <Login />
+        <Logout />
       </React.Fragment>
     );
   }

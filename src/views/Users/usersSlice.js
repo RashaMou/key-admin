@@ -16,7 +16,8 @@ const usersSlice = createSlice({
     },
     getVettingUsersSucess(state, action) {
       state.vetting.loading = false;
-      state.vetting.users.push(...action.payload.data);
+      const users = action.payload.data;
+      state.vetting.users = users;
     },
     getVettingUsersFailure(state, action) {
       state.vetting.loading = false;
