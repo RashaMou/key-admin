@@ -1,13 +1,12 @@
-import "react-app-polyfill/ie9"; // For IE 9-11 support
+import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
-// import 'react-app-polyfill/ie11'; // For IE 11 support
+import "react-app-polyfill/ie11";
 import "./polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
