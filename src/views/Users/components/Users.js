@@ -20,7 +20,7 @@ function UserRow(props) {
   };
 
   const handleApprove = () => {
-    props.approveUser(37);
+    props.approveUser(user.id);
     toggleModal();
   };
 
@@ -55,10 +55,10 @@ function UserRow(props) {
         </td>
         <td>
           <Button color="success" onClick={() => handleClick("Approve")}>
-            <i class="fas fa-check"></i>
+            <i className="fas fa-check"></i>
           </Button>
           <Button color="danger" onClick={() => handleClick("Deny")}>
-            <i class="fas fa-times"></i>
+            <i className="fas fa-times"></i>
           </Button>
         </td>
       </tr>
@@ -66,11 +66,10 @@ function UserRow(props) {
   );
 }
 
-const Users = (props) => {
-  console.log(props.users);
+const Users = ({ getVettingUsers, approveUser, users }) => {
   useEffect(() => {
-    props.getVettingUsers();
-  }, []);
+    getVettingUsers();
+  }, [getVettingUsers]);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -90,7 +89,7 @@ const Users = (props) => {
   };
 
   const pageSize = 10;
-  const pagesCount = Math.ceil(props.users.length / 10);
+  const pagesCount = Math.ceil(users.length / 10);
 
   return (
     <div className="animated fadeIn">
@@ -113,10 +112,10 @@ const Users = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.users
+              {users
                 .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
                 .map((user, index) => (
-                  <UserRow key={index} user={user} />
+                  <UserRow key={index} user={user} approveUser={approveUser} />
                 ))}
             </tbody>
           </Table>
