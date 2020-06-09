@@ -7,8 +7,11 @@ const PopupModal = (props) => {
       <ModalHeader>User Approval</ModalHeader>
       <ModalBody>{`Are you sure you want to ${props.action} this application?`}</ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={props.successAction}>
-          Approve
+        <Button
+          color={`${props.action === "approve" ? "primary" : "danger"}`}
+          onClick={props.successAction}
+        >
+          {props.action.charAt(0).toUpperCase() + props.action.slice(1)}
         </Button>{" "}
         <Button color="secondary" onClick={props.toggle}>
           Cancel
