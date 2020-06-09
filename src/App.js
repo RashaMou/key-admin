@@ -3,10 +3,8 @@ import { Switch } from "react-router-dom";
 import { useAuth0 } from "./react-auth0-spa";
 import "./App.scss";
 import PrivateRoute from "./utils/PrivateRoute";
-import Profile from "./components/Profile";
-import Login from "./views/Pages/Login";
-import Page404 from "./views/Pages/Page404";
-import Page500 from "./views/Pages/Page500";
+import Page404 from "./Pages/Page404/Page404";
+import Page500 from "./Pages/Page500/Page500";
 import DefaultLayout from "./containers/DefaultLayout";
 
 const App = () => {
@@ -17,12 +15,6 @@ const App = () => {
   }
   return (
     <Switch>
-      <PrivateRoute
-        exact
-        path="/login"
-        name="Login Page"
-        render={(props) => <Login {...props} />}
-      />
       <PrivateRoute
         exact
         path="/404"
@@ -40,7 +32,6 @@ const App = () => {
         name="Home"
         render={(props) => <DefaultLayout {...props} />}
       />
-      <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   );
 };

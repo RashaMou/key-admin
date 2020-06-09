@@ -4,7 +4,7 @@ import { Nav, NavItem } from "reactstrap";
 import PropTypes from "prop-types";
 
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
-import logo from "../../assets/img/brand/key-logo.png";
+import logo from "../../assets/key-logo.png";
 import Logout from "./Logout";
 
 const propTypes = {
