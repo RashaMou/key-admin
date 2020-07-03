@@ -15,23 +15,15 @@ const App = () => {
   }
   return (
     <Switch>
-      <PrivateRoute
-        exact
-        path="/404"
-        name="Page 404"
-        render={(props) => <Page404 {...props} />}
-      />
-      <PrivateRoute
-        exact
-        path="/500"
-        name="Page 500"
-        render={(props) => <Page500 {...props} />}
-      />
-      <PrivateRoute
-        path="/"
-        name="Home"
-        render={(props) => <DefaultLayout {...props} />}
-      />
+      <PrivateRoute exact path="/404" name="Page 404">
+        <Page404 />
+      </PrivateRoute>
+      <PrivateRoute exact path="/500" name="Page 500">
+        <Page500 />
+      </PrivateRoute>
+      <PrivateRoute path="/" name="Home">
+        <DefaultLayout />
+      </PrivateRoute>
     </Switch>
   );
 };

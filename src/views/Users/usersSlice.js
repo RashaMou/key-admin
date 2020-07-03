@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+// axios.defaults.headers.common[]
 
 const usersSlice = createSlice({
   name: "users",
@@ -68,10 +69,13 @@ export const {
 } = usersSlice.actions;
 export default usersSlice.reducer;
 
+// const url = "https://key-conservation-staging.herokuapp.com/api";
+const url = "http://localhost:8000/api";
+
 export const getVettingUsers = () => async (dispatch) => {
   dispatch(getVettingUsersStart());
   try {
-    const vettingUsers = await axios.get("http://localhost:8000/api/vetting");
+    const vettingUsers = await axios.get(`${url}/vetting`);
     if (vettingUsers) {
       dispatch(getVettingUsersSucess(vettingUsers));
     }
@@ -81,11 +85,12 @@ export const getVettingUsers = () => async (dispatch) => {
 };
 
 export const approveUser = (id) => async (dispatch) => {
-  console.log("approveUsers");
   dispatch(approveUserStart());
+  console.log(`${url}/vetting/${id}`);
   try {
-    const res = await axios.put(`http://localhost:8000/api/vetting/${id}`);
+    const res = await axios.put(`${url}/vetting/${id}`);
     if (res) {
+      console.log(res.data);
       dispatch(approveUserSuccess(res.data.approvedUser.sub));
     }
   } catch (error) {
@@ -96,7 +101,7 @@ export const approveUser = (id) => async (dispatch) => {
 export const denyUser = (id) => async (dispatch) => {
   dispatch(denyUserStart());
   try {
-    const res = await axios.delete(`http://localhost:8000/api/vetting/${id}`);
+    const res = await axios.delete(`${url}/vetting/${id}`);
     if (res) {
       dispatch(denyUserSuccess(res.data.sub));
     }

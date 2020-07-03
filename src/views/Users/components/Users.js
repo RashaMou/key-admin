@@ -25,12 +25,13 @@ function UserRow(props) {
   };
 
   const handleApprove = () => {
+    console.log("user.id", user.id);
     props.approveUser(user.id);
     toggleModal();
   };
 
   const handleDeny = () => {
-    props.denyUser(user.id);
+    props.denyUser(user.sub);
     toggleModal();
   };
 
@@ -64,17 +65,21 @@ function UserRow(props) {
         </td>
         <td>{user.email}</td>
         <td>
-          {/* {user.country} */}
-          <i
+          {user.country}
+          {/* <i
             className={`flag-icon flag-icon-${country}  h4 mb-0 title=${country} aria-label=${country} id=${country}`}
-          ></i>
+          ></i> */}
         </td>
         <td>
           <a href={user.link_url}>{user.link_url}</a>
         </td>
         <td>{user.phone_number}</td>
         <td>
-          <Link to={userLink}>{user.docs}</Link>
+          <a href={user.file}>
+            <span style={{ fontSize: "1.5rem" }}>
+              <i class="fad fa-file-alt"></i>
+            </span>
+          </a>
         </td>
         <td>
           <Button
@@ -96,7 +101,7 @@ function UserRow(props) {
 const Users = ({ getVettingUsers, approveUser, denyUser, users }) => {
   useEffect(() => {
     getVettingUsers();
-  }, [getVettingUsers]);
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -140,16 +145,17 @@ const Users = ({ getVettingUsers, approveUser, denyUser, users }) => {
               </tr>
             </thead>
             <tbody>
-              {users
-                .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
-                .map((user, index) => (
-                  <UserRow
-                    key={index}
-                    user={user}
-                    approveUser={approveUser}
-                    denyUser={denyUser}
-                  />
-                ))}
+              {users &&
+                users
+                  .slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+                  .map((user, index) => (
+                    <UserRow
+                      key={index}
+                      user={user}
+                      approveUser={approveUser}
+                      denyUser={denyUser}
+                    />
+                  ))}
             </tbody>
           </Table>
           <div className="table-pag-flex">

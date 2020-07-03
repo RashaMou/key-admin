@@ -12,7 +12,6 @@ export const Auth0Provider = ({
   ...initOptions
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState();
-  // user gets us their sub, among other things
   const [user, setUser] = useState();
   const [auth0Client, setAuth0] = useState();
   const [loading, setLoading] = useState(true);

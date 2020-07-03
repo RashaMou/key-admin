@@ -4,7 +4,6 @@ import * as router from "react-router-dom";
 import { Container } from "reactstrap";
 
 import {
-  AppAside,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -17,27 +16,20 @@ import {
 } from "@coreui/react";
 import navigation from "../../sidebarNav";
 import routes from "../../routes";
-import DefaultAside from "./DefaultAside";
 import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 
 class DefaultLayout extends Component {
-  signOut(e) {
-    e.preventDefault();
-    this.props.history.push("/login");
-  }
-
   render() {
     return (
       <div className="app">
-        <AppHeader fixed>
+        <AppHeader>
           <DefaultHeader />
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            {/* <Suspense> */}
             <AppSidebarNav
               navConfig={navigation}
               {...this.props}
@@ -48,26 +40,25 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router} />
-            <Container fluid>
+            <Container>
               <Switch>
                 {routes.map((route, idx) => {
+                  console.log("route.component", route.component);
                   return route.component ? (
                     <Route
                       key={idx}
                       path={route.path}
                       exact={route.exact}
                       name={route.name}
-                      render={(props) => <route.component {...props} />}
-                    />
+                    >
+                      <route.component />
+                    </Route>
                   ) : null;
                 })}
                 <Redirect from="/" to="/dashboard" />
               </Switch>
             </Container>
           </main>
-          <AppAside fixed>
-            <DefaultAside />
-          </AppAside>
         </div>
         <AppFooter>
           <DefaultFooter />
